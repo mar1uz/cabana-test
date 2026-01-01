@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Nordic A-Frame | Escape to Nature</title>
+    <!-- Import Playful Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            /* Playful Palette */
+            --primary: #00b894;
+            /* Minty Teal */
+            --accent: #ff7675;
+            /* Playful Pinkish Red */
+            --light: #fef9e7;
+            /* Creamy Warm White */
+            --dark: #2d3436;
+            --text: #2d3436;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text);
+            line-height: 1.6;
+            background-color: var(--light);
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: 0.3s;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* --- NAVIGATION --- */
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ROUNDER BUTTONS */
+        /* PLAYFUL BUTTONS */
+        .btn-book {
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 2.2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            border: 3px solid transparent;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Bouncy spring */
+            box-shadow: 0 5px 15px rgba(255, 118, 117, 0.3);
+        }
+
+        .btn-book:hover {
+            transform: scale(1.1) rotate(-2deg);
+            background: #e17055;
+            box-shadow: 0 8px 20px rgba(255, 118, 117, 0.4);
+        }
+
+        /* --- HERO SECTION --- */
+        /* --- HERO SECTION --- */
+        header {
+            height: 90vh;
+            /* --- YOUR BACKGROUND IMAGE HERE ---
+               Make sure you have a file named hero-bg.jpg in an 'images' folder next to this html file.
+            */
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            /* A backup color in case image doesn't load */
+            background-color: var(--primary);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 1rem;
+            border-bottom-left-radius: 60px;
+            border-bottom-right-radius: 60px;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-family: var(--font-heading);
+            font-size: 4.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        header p {
+            font-size: 1.4rem;
+            margin-bottom: 2.5rem;
+            max-width: 650px;
+            font-weight: 600;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* --- FEATURES --- */
+        .features {
+            padding: 4rem 5%;
+            text-align: center;
+        }
+
+        .features h2 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        /* ROUNDER FEATURE TILES */
+        /* PLAYFUL FEATURE TILES */
+        .feature-item {
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: var(--primary);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* --- GALLERY --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px 5%;
+        }
+
+        /* ROUNDER GALLERY IMAGES */
+        .gallery img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 20px;
+            /* Increased roundness */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- LIGHTBOX --- */
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            cursor: zoom-out;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        #lightbox.active img {
+            transform: scale(1);
+        }
+
+        /* --- BOOKING & PAYMENT SECTION --- */
+        .booking-section {
+            padding: 5rem 5%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .booking-info,
+        .booking-widget {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* ROUNDER BOOKING WIDGET */
+        .booking-widget {
+            background: white;
+            color: var(--text);
+            padding: 3rem;
+            border-radius: 40px;
+            /* Very round */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border: 2px solid #f0f0f0;
+        }
+
+        .booking-widget h3 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        /* Mock Calendar UI */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* ROUNDER INPUTS */
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid #eee;
+            border-radius: 25px;
+            /* Round inputs */
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: var(--font-body);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 184, 148, 0.1);
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent);
+        }
+
+        .price-summary {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        /* ROUNDER SUBMIT BUTTON */
+        .btn-submit {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 50px;
+            /* Pill shape */
+            transition: transform 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: #a04000;
+            transform: translateY(-2px);
+        }
+
+        /* --- REVIEWS --- */
+        .reviews-section {
+            padding: 4rem 0;
+            background: var(--light);
+            overflow: hidden;
+            /* Hides the scrollbar */
+        }
+
+        .reviews-section h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+        }
+
+        .reviews-track {
+            display: flex;
+            gap: 2rem;
+            width: max-content;
+            animation: scroll 20s linear infinite;
+        }
+
+        .reviews-track:hover {
+            animation-play-state: paused;
+        }
+
+        .review-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            min-width: 300px;
+            max-width: 300px;
+            flex-shrink: 0;
+            border: 2px solid #f8f8f8;
+        }
+
+        .review-stars {
+            color: #f1c40f;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-text {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+
+            /* Shift by half because we duplicate content */
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--dark);
+            color: #888;
+            text-align: center;
+            padding: 3rem;
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">Ieremia Residence</div>
+        <div class="nav-links">
+            <a href="#about">The Cabin</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#location">Location</a>
+        </div>
+        <a href="#book" class="btn-book">Book Now</a>
+    </nav>
+
+    <header>
+        <h1>Cabana Ieremia</h1>
+        <p>A modern A-frame sanctuary nestled in the deep forest. Wood stove, star-gazing deck, and silence.</p>
+        <a href="#book" class="btn-book">Check Availability</a>
+    </header>
+
+    <section id="about" class="features">
+        <h2>The Experience</h2>
+        <div class="feature-grid">
+            <div class="feature-item">
+                <span class="feature-icon">🔥</span>
+                <h3>Wood Stove</h3>
+                <p>Fully stocked firewood for cozy nights.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🌲</span>
+                <h3>Nature Trails</h3>
+                <p>Direct access to 50km of hiking paths.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">📶</span>
+                <h3>Starlink WiFi</h3>
+                <p>High-speed internet if you need it.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🌡️</span>
+                <h3>Panoramic Sauna</h3>
+                <p>Modern cube sauna with forest views.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🛁</span>
+                <h3>Hot Tub (Ciubar)</h3>
+                <p>Soak under the stars in warm water.</p>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🥾</span>
+                <h3>Hiking Adventures</h3>
+                <p>Discover hidden paths and breathtaking peaks nearby.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery" class="gallery">
+        <img src="images/interior.jpg" alt="Cabin Interior">
+        <img src="images/exterior.jpg" alt="A-Frame Cabin Exterior">
+        <img src="images/surroundings.jpg" alt="Surrounding Nature">
+        <img src="images/sauna.jpg" alt="Barrel Sauna">
+        <img src="images/hot-tub.jpg" alt="Relaxing Ciubar">
+        <img src="images/hiking.jpg" alt="Mountain Hiking">
+    </section>
+
+    <section id="book" class="booking-section">
+        <div class="booking-info">
+            <h2>Ready to stay?</h2>
+            <p>We handle bookings securely. Select your dates to see pricing.</p>
+            <br>
+            <ul style="line-height: 2rem;">
+                <li>✅ Instant Confirmation</li>
+                <li>✅ Secure Payment via Stripe</li>
+                <li>✅ Self Check-in</li>
+            </ul>
+        </div>
+
+        <div class="booking-widget">
+            <h3>Book Your Dates</h3>
+
+            <form id="bookingForm" onsubmit="handleBooking(event)">
+                <div class="form-group">
+                    <label for="checkin">Check-in Date</label>
+                    <input type="date" id="checkin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="checkout">Check-out Date</label>
+                    <input type="date" id="checkout" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="guests">Guests</label>
+                    <select id="guests">
+                        <option>1 Guest</option>
+                        <option>2 Guests</option>
+                        <option>3 Guests</option>
+                        <option>4 Guests</option>
+                    </select>
+                </div>
+
+                <div class="price-summary" id="priceSummary">
+                    Select dates to see total
+                </div>
+
+                <button type="submit" class="btn-submit">Proceed to Payment</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section class="reviews-section">
+        <h2>What Our Guests Say</h2>
+        <div class="reviews-track">
+            <!-- GROUP 1 -->
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Absolute magic. The silence is deafening in the best way possible."</p>
+                <p class="review-author">- Sarah & Tom</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"The wood stove made our winter getaway perfect. Cozy and warm."</p>
+                <p class="review-author">- James R.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Hiking trails right out the back door. Saw a deer during coffee!"</p>
+                <p class="review-author">- Emily W.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"The A-frame architecture is stunning. Instagram heaven."</p>
+                <p class="review-author">- Marcus L.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Best sleep I've had in years. Highly recommend."</p>
+                <p class="review-author">- Jessica B.</p>
+            </div>
+            <!-- GROUP 2 (Duplicate for infinite scroll illusion) -->
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Absolute magic. The silence is deafening in the best way possible."</p>
+                <p class="review-author">- Sarah & Tom</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"The wood stove made our winter getaway perfect. Cozy and warm."</p>
+                <p class="review-author">- James R.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Hiking trails right out the back door. Saw a deer during coffee!"</p>
+                <p class="review-author">- Emily W.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"The A-frame architecture is stunning. Instagram heaven."</p>
+                <p class="review-author">- Marcus L.</p>
+            </div>
+            <div class="review-card">
+                <div class="review-stars">★★★★★</div>
+                <p class="review-text">"Best sleep I've had in years. Highly recommend."</p>
+                <p class="review-author">- Jessica B.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 The Nordic A-Frame. Built for relaxation.</p>
+    </footer>
+
+    <!-- LIGHTBOX OVERLAY -->
+    <div id="lightbox">
+        <img id="lightbox-img" src="" alt="Full screen view">
+    </div>
+
+    <script>
+        // --- SIMPLE PRICING LOGIC (MOCKUP) ---
+        const ratePerNight = 150; // Currency
+        const checkinInput = document.getElementById('checkin');
+        const checkoutInput = document.getElementById('checkout');
+        const priceSummary = document.getElementById('priceSummary');
+
+        // Set minimum date to today
+        checkinInput.min = new Date().toISOString().split("T")[0];
+        checkoutInput.min = new Date().toISOString().split("T")[0];
+
+        function calculateTotal() {
+            const start = new Date(checkinInput.value);
+            const end = new Date(checkoutInput.value);
+
+            if (start && end && end > start) {
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const total = diffDays * ratePerNight;
+                priceSummary.innerHTML = `<strong>Total: $${total}</strong> <br><small>(${diffDays} nights at $${ratePerNight}/night)</small>`;
+                priceSummary.style.background = "#e8f6f3";
+                priceSummary.style.color = "var(--primary)";
+            } else {
+                priceSummary.innerHTML = "Select valid dates";
+                priceSummary.style.background = "#f8f9fa";
+            }
+        }
+
+        checkinInput.addEventListener('change', calculateTotal);
+        checkoutInput.addEventListener('change', calculateTotal);
+
+        // --- MOCK SUBMISSION HANDLER ---
+        function handleBooking(e) {
+            e.preventDefault();
+            alert("SKEPTICAL EXPERT NOTE:\n\nReminder: No real payment processed. This is the point where you would connect Stripe or your booking engine.");
+        }
+
+        // --- GALLEY LIGHTBOX ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const galleryImages = document.querySelectorAll('.gallery img');
+
+        galleryImages.forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+        });
+    </script>
+</body>
+
+</html>
