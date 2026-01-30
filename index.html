@@ -9,6 +9,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600;700&display=swap"
         rel="stylesheet">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         /* --- CSS VARIABLES & RESET --- */
         :root {
@@ -172,8 +174,22 @@
 
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 900px) {
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ROUNDER FEATURE TILES */
@@ -332,6 +348,43 @@
             border-color: var(--accent);
         }
 
+        .date-input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .date-input-wrapper input[type=\"text\"] {
+            cursor: pointer;
+        }
+
+        .date-input-wrapper input[type=\"text\"]:hover {
+            background: rgba(0, 184, 148, 0.05);
+        }
+
+        /* Flatpickr Custom Styling */
+        .flatpickr-day.disabled,
+        .flatpickr-day.disabled:hover {
+            background: #ffebee !important;
+            color: #d63031 !important;
+            cursor: not-allowed !important;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .flatpickr-day.selected,
+        .flatpickr-day.startRange,
+        .flatpickr-day.endRange,
+        .flatpickr-day.inRange {
+            background: #00b894 !important;
+            border-color: #00b894 !important;
+            color: white !important;
+        }
+
+        .flatpickr-calendar {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+            border-radius: 15px !important;
+        }
+
         .price-summary {
             margin: 1.5rem 0;
             padding: 1rem;
@@ -488,8 +541,64 @@
             <a href="#gallery">Gallery</a>
             <a href="#location">Location</a>
         </div>
-        <a href="#book" class="btn-book">Book Now</a>
+        <div id="auth-actions" style="display: flex; gap: 1rem; align-items: center;">
+            <button onclick="toggleAuthModal('login')" class="btn-book"
+                style="background: transparent; border: 2px solid var(--accent); color: var(--accent); white-space: nowrap;">Login</button>
+            <a href="#book" class="btn-book">Book Now</a>
+        </div>
+        <div id="user-actions" style="display: none; gap: 1.5rem; align-items: center;">
+            <span id="welcome-text"></span>
+            <button id="admin-btn" onclick="showAdminPanel()" class="btn-book"
+                style="display: none; background: #d63031;">Admin</button>
+            <button onclick="logout()" class="btn-book"
+                style="background: var(--light); color: var(--accent); border: 1px solid #ddd;">Logout</button>
+        </div>
     </nav>
+
+    <!-- AUTH MODAL -->
+    <div id="authModal" class="modal"
+        style="display:none; position:fixed; z-index:2001; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); backdrop-filter:blur(5px);">
+        <div
+            style="background:white; margin:10% auto; padding:3rem; border-radius:40px; width:400px; box-shadow:0 15px 50px rgba(0,0,0,0.2); position:relative;">
+            <span onclick="toggleAuthModal()"
+                style="position:absolute; right:25px; top:20px; font-size:2rem; cursor:pointer;">&times;</span>
+            <h3 id="modalTitle"
+                style="font-family:var(--font-heading); font-size:2rem; margin-bottom:1.5rem; color:var(--primary);">
+                Login</h3>
+
+            <form id="authForm">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="authEmail" required placeholder="your@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="authPassword" required>
+                </div>
+                <button type="submit" id="authSubBtn" class="btn-submit">Sign In</button>
+            </form>
+
+            <p style="margin-top:1.5rem; text-align:center; font-size:0.9rem;">
+                <span id="modalSwitchText">Don't have an account?</span>
+                <a href="javascript:void(0)" onclick="switchAuthMode()" id="modalSwitchLink"
+                    style="color:var(--primary); font-weight:bold;">Register</a>
+            </p>
+
+            <hr style="margin:1.5rem 0; border:0; border-top:1px solid #eee;">
+            <p style="text-align:center; font-size:0.8rem; color:#888; margin-bottom:1rem;">Or continue with</p>
+            <div style="display:flex; gap:1rem;">
+                <button onclick="alert('Social login setup required in Google Console')"
+                    style="flex:1; padding:0.8rem; border-radius:50px; border:1px solid #ddd; background:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                    Google
+                </button>
+                <button onclick="alert('Social login setup required in Facebook Console')"
+                    style="flex:1; padding:0.8rem; border-radius:50px; border:1px solid #ddd; background:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.5rem;">
+                    Facebook
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <header>
         <h1>Cabana Ieremia</h1>
@@ -559,13 +668,8 @@
 
             <form id="bookingForm" onsubmit="handleBooking(event)">
                 <div class="form-group">
-                    <label for="checkin">Check-in Date</label>
-                    <input type="date" id="checkin" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="checkout">Check-out Date</label>
-                    <input type="date" id="checkout" required>
+                    <label for="dateRange">Select Your Dates</label>
+                    <input type="text" id="dateRange" placeholder="Select check-in and check-out dates" required>
                 </div>
 
                 <div class="form-group">
@@ -582,12 +686,45 @@
                     Select dates to see total
                 </div>
 
-                <button type="submit" class="btn-submit">Proceed to Payment</button>
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-submit" style="flex: 1;">Pay with Stripe</button>
+                    <button type="button" onclick="handleTestBooking(event)" class="btn-submit"
+                        style="flex: 1; background: #00b894;">Test Mode (No Payment)</button>
+                </div>
             </form>
         </div>
     </section>
 
-    <!-- REVIEWS SECTION -->
+    <!-- ADMIN PANEL MODAL -->
+    <div id="adminModal" class="modal"
+        style="display:none; position:fixed; z-index:2002; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); color:white;">
+        <div
+            style="background:#2d3436; margin:5% auto; padding:3rem; border-radius:40px; width:90%; max-width:1000px; box-shadow:0 15px 50px rgba(0,0,0,0.4); position:relative; max-height:80vh; overflow-y:auto;">
+            <span onclick="document.getElementById('adminModal').style.display='none'"
+                style="position:absolute; right:25px; top:20px; font-size:2rem; cursor:pointer;">&times;</span>
+            <h3 style="font-family:var(--font-heading); font-size:2.5rem; margin-bottom:1.5rem; color:var(--primary);">
+                Admin Dashboard</h3>
+            <p style="margin-bottom:2rem;">All reservations in the system:</p>
+
+            <table style="width:100%; border-collapse:collapse; text-align:left;">
+                <thead>
+                    <tr style="border-bottom:2px solid #555;">
+                        <th style="padding:1rem;">Email</th>
+                        <th style="padding:1rem;">Check-In</th>
+                        <th style="padding:1rem;">Check-Out</th>
+                        <th style="padding:1rem;">Guests</th>
+                        <th style="padding:1rem;">Price</th>
+                        <th style="padding:1rem;">Status</th>
+                        <th style="padding:1rem;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="adminTableBody">
+                    <!-- Data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <section class="reviews-section">
         <h2>What Our Guests Say</h2>
         <div class="reviews-track">
@@ -656,43 +793,390 @@
     </div>
 
     <script>
-        // --- SIMPLE PRICING LOGIC (MOCKUP) ---
-        const ratePerNight = 150; // Currency
-        const checkinInput = document.getElementById('checkin');
-        const checkoutInput = document.getElementById('checkout');
+        // --- FLATPICKR DATE RANGE PICKER ---
+        const ratePerNight = 150;
         const priceSummary = document.getElementById('priceSummary');
 
-        // Set minimum date to today
-        checkinInput.min = new Date().toISOString().split("T")[0];
-        checkoutInput.min = new Date().toISOString().split("T")[0];
+        // Helper function to format Date to dd/mm/yyyy
+        function formatDate(date) {
+            if (!date || isNaN(date)) return '';
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
 
-        function calculateTotal() {
-            const start = new Date(checkinInput.value);
-            const end = new Date(checkoutInput.value);
+        // Parse DD/MM/YYYY to Date
+        function parseDate(dateStr) {
+            const [day, month, year] = dateStr.split('/');
+            return new Date(year, month - 1, day);
+        }
 
-            if (start && end && end > start) {
-                const diffTime = Math.abs(end - start);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                const total = diffDays * ratePerNight;
-                priceSummary.innerHTML = `<strong>Total: $${total}</strong> <br><small>(${diffDays} nights at $${ratePerNight}/night)</small>`;
-                priceSummary.style.background = "#e8f6f3";
-                priceSummary.style.color = "var(--primary)";
-            } else {
-                priceSummary.innerHTML = "Select valid dates";
-                priceSummary.style.background = "#f8f9fa";
+        // Get all dates in a range
+        function getDatesInRange(startDate, endDate) {
+            const dates = [];
+            let currentDate = new Date(startDate);
+            while (currentDate <= endDate) {
+                dates.push(new Date(currentDate));
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+            return dates;
+        }
+
+        // Initialize Flatpickr with booked dates disabled
+        async function initializeDatePicker() {
+            try {
+                const res = await fetch('/api/booked-dates');
+                const bookedRanges = await res.json();
+
+                // Convert booked ranges to disabled dates
+                const disabledDates = [];
+                bookedRanges.forEach(range => {
+                    const start = parseDate(range.checkIn);
+                    const end = parseDate(range.checkOut);
+                    const datesInRange = getDatesInRange(start, end);
+                    disabledDates.push(...datesInRange);
+                });
+
+                flatpickr("#dateRange", {
+                    mode: "range",
+                    dateFormat: "d/m/Y",
+                    minDate: "today",
+                    disable: disabledDates,
+                    onChange: function (selectedDates, dateStr, instance) {
+                        if (selectedDates.length === 2) {
+                            const checkIn = selectedDates[0];
+                            const checkOut = selectedDates[1];
+
+                            window.selectedDates = {
+                                checkIn: formatDate(checkIn),
+                                checkOut: formatDate(checkOut)
+                            };
+
+                            const diffDays = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+                            const total = diffDays * ratePerNight;
+                            priceSummary.innerHTML = `<strong>Total: $${total}</strong> <br><small>(${diffDays} nights at $${ratePerNight}/night)</small>`;
+                            priceSummary.style.background = "#e8f6f3";
+                            priceSummary.style.color = "var(--primary)";
+                        } else {
+                            priceSummary.innerHTML = "Select check-in and check-out dates";
+                            priceSummary.style.background = "#f8f9fa";
+                        }
+                    }
+                });
+            } catch (err) {
+                console.error('Error loading booked dates:', err);
+                flatpickr("#dateRange", {
+                    mode: "range",
+                    dateFormat: "d/m/Y",
+                    minDate: "today"
+                });
             }
         }
 
-        checkinInput.addEventListener('change', calculateTotal);
-        checkoutInput.addEventListener('change', calculateTotal);
-
-        // --- MOCK SUBMISSION HANDLER ---
-        function handleBooking(e) {
-            e.preventDefault();
-            alert("SKEPTICAL EXPERT NOTE:\n\nReminder: No real payment processed. This is the point where you would connect Stripe or your booking engine.");
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeDatePicker);
+        } else {
+            initializeDatePicker();
         }
 
-        // --- GALLEY LIGHTBOX ---
+        // --- AUTH LOGIC ---
+        let authMode = 'login';
+        const userToken = localStorage.getItem('token');
+        const userData = JSON.parse(localStorage.getItem('user'));
+
+        function checkAuthStatus() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (token && user) {
+                document.getElementById('auth-actions').style.display = 'none';
+                document.getElementById('user-actions').style.display = 'flex';
+                document.getElementById('welcome-text').innerText = `Hello, ${user.email.split('@')[0]}`;
+                if (user.isAdmin) {
+                    document.getElementById('admin-btn').style.display = 'block';
+                }
+            } else {
+                document.getElementById('auth-actions').style.display = 'flex';
+                document.getElementById('user-actions').style.display = 'none';
+            }
+        }
+
+        checkAuthStatus();
+
+        function toggleAuthModal(mode) {
+            const modal = document.getElementById('authModal');
+            if (mode) {
+                authMode = mode;
+                updateAuthModal();
+                modal.style.display = 'block';
+            } else {
+                modal.style.display = 'none';
+            }
+        }
+
+        function switchAuthMode() {
+            authMode = authMode === 'login' ? 'register' : 'login';
+            updateAuthModal();
+        }
+
+        function updateAuthModal() {
+            document.getElementById('modalTitle').innerText = authMode === 'login' ? 'Login' : 'Register';
+            document.getElementById('authSubBtn').innerText = authMode === 'login' ? 'Sign In' : 'Create Account';
+            document.getElementById('modalSwitchText').innerText = authMode === 'login' ? "Don't have an account?" : "Already have an account?";
+            document.getElementById('modalSwitchLink').innerText = authMode === 'login' ? 'Register' : 'Login';
+        }
+
+        document.getElementById('authForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+
+            const endpoint = authMode === 'login' ? '/api/login' : '/api/register';
+
+            try {
+                const res = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    if (authMode === 'login') {
+                        localStorage.setItem('token', data.token);
+                        localStorage.setItem('user', JSON.stringify(data.user));
+                        toggleAuthModal();
+                        checkAuthStatus();
+                        alert('Logged in successfully!');
+                    } else {
+                        alert('Account created! Please login.');
+                        authMode = 'login';
+                        updateAuthModal();
+                    }
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                alert('Connection error');
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            checkAuthStatus();
+            window.location.reload();
+        }
+
+        // --- MOCK SUBMISSION HANDLER ---
+        async function handleBooking(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please login to make a reservation.');
+                toggleAuthModal('login');
+                return;
+            }
+
+            if (!window.selectedDates || !window.selectedDates.checkIn || !window.selectedDates.checkOut) {
+                alert('Please select check-in and check-out dates');
+                return;
+            }
+
+            const checkIn = window.selectedDates.checkIn;
+            const checkOut = window.selectedDates.checkOut;
+            const guests = parseInt(document.getElementById('guests').value);
+
+            // Parse dates for calculation
+            const start = parseDate(checkIn);
+            const end = parseDate(checkOut);
+
+            const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+            const totalPrice = diffDays * ratePerNight;
+
+            // Check availability first
+            try {
+                const availRes = await fetch('/api/check-availability', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ checkIn, checkOut })
+                });
+                const availData = await availRes.json();
+
+                if (!availData.available) {
+                    alert('❌ These dates are already booked! Please select different dates.');
+                    return;
+                }
+            } catch (err) {
+                alert('Error checking availability');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ checkIn, checkOut, guests, totalPrice })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert('Redirecting to Stripe payment... (Demo: Reservation saved as pending)');
+                    console.log('Stripe Session ID:', data.id);
+                    location.reload(); // Refresh to update calendar
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                alert('Payment error');
+            }
+        }
+
+
+
+        // --- TEST MODE BOOKING ---
+        async function handleTestBooking(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please login to make a reservation.');
+                toggleAuthModal('login');
+                return;
+            }
+
+            if (!window.selectedDates || !window.selectedDates.checkIn || !window.selectedDates.checkOut) {
+                alert('Please select check-in and check-out dates');
+                return;
+            }
+
+            const checkIn = window.selectedDates.checkIn;
+            const checkOut = window.selectedDates.checkOut;
+            const guests = parseInt(document.getElementById('guests').value);
+
+            // Parse dates for calculation
+            const start = parseDate(checkIn);
+            const end = parseDate(checkOut);
+
+            const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+            const totalPrice = diffDays * ratePerNight;
+
+            // Check availability first
+            try {
+                const availRes = await fetch('/api/check-availability', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ checkIn, checkOut })
+                });
+                const availData = await availRes.json();
+
+                if (!availData.available) {
+                    alert('❌ These dates are already booked! Please select different dates.');
+                    return;
+                }
+            } catch (err) {
+                alert('Error checking availability');
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/reservations/test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ checkIn, checkOut, guests, totalPrice })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    alert('✅ Test reservation created successfully! Check the Admin panel.');
+                    location.reload(); // Refresh to update calendar
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                alert('Booking error');
+            }
+        }
+
+
+
+
+
+        async function showAdminPanel() {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch('/api/admin/reservations', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    const tbody = document.getElementById('adminTableBody');
+                    tbody.innerHTML = data.map(res => {
+                        // Dates are already in dd/mm/yyyy format from database
+                        const checkInFormatted = res.checkIn;
+                        const checkOutFormatted = res.checkOut;
+
+                        const statusColors = {
+                            'confirmed': '#00b894',
+                            'pending': '#fdcb6e',
+                            'cancelled': '#d63031'
+                        };
+
+                        const actionButtons = res.status === 'pending'
+                            ? `<button onclick="updateReservationStatus(${res.id}, 'confirmed')" style="background:#00b894; color:white; border:none; padding:6px 12px; border-radius:8px; cursor:pointer; margin-right:5px;">Confirm</button>
+                               <button onclick="updateReservationStatus(${res.id}, 'cancelled')" style="background:#d63031; color:white; border:none; padding:6px 12px; border-radius:8px; cursor:pointer;">Cancel</button>`
+                            : `<span style="opacity:0.5;">No actions</span>`;
+
+                        return `
+                            <tr style="border-bottom:1px solid #444;">
+                                <td style="padding:1rem;">${res.email}</td>
+                                <td style="padding:1rem;">${checkInFormatted}</td>
+                                <td style="padding:1rem;">${checkOutFormatted}</td>
+                                <td style="padding:1rem;">${res.guests}</td>
+                                <td style="padding:1rem;">$${res.totalPrice}</td>
+                                <td style="padding:1rem;"><span style="background:${statusColors[res.status] || '#95a5a6'}; padding:4px 10px; border-radius:10px; font-size:0.8rem; color:white;">${res.status.toUpperCase()}</span></td>
+                                <td style="padding:1rem;">${actionButtons}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                    document.getElementById('adminModal').style.display = 'block';
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                alert('Admin access error');
+            }
+        }
+
+        async function updateReservationStatus(id, status) {
+            const token = localStorage.getItem('token');
+            try {
+                const res = await fetch(`/api/admin/reservations/${id}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`✅ Reservation ${status}!`);
+                    showAdminPanel(); // Refresh the list
+                } else {
+                    alert(data.message);
+                }
+            } catch (err) {
+                alert('Error updating reservation');
+            }
+        }
+
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const galleryImages = document.querySelectorAll('.gallery img');
@@ -731,6 +1215,9 @@
 
         createSnowflakes();
     </script>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </body>
 
 </html>
